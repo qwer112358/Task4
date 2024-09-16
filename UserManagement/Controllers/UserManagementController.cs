@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -14,14 +13,11 @@ namespace UserManagement.Controllers
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IAccount _accountManager;
-        private readonly IAuthenticationService _authenticationService;
 
-        public UserManagementController(UserManager<ApplicationUser> userManager, IAccount accountManager, 
-            IAuthenticationService authenticationService)
+        public UserManagementController(UserManager<ApplicationUser> userManager, IAccount accountManager)
         {
             _userManager = userManager;
             _accountManager = accountManager;
-            _authenticationService = authenticationService;
         }
 
         public async Task<IActionResult> Index() => View(await _userManager.Users.ToListAsync());
@@ -54,7 +50,6 @@ namespace UserManagement.Controllers
 					user.IsBlocked = false;
 					await _userManager.UpdateAsync(user);
 				}
-
             }
             return RedirectToHome();
         }
@@ -66,9 +61,7 @@ namespace UserManagement.Controllers
             {
                 var user = await _userManager.FindByIdAsync(id);
                 if (user is not null)
-                {
 					await _userManager.DeleteAsync(user);
-				}
             }
             return RedirectToHome();
         }

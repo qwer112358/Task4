@@ -1,4 +1,3 @@
-using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
 using UserManagement.Controllers;
 using UserManagement.Data;
@@ -33,12 +32,7 @@ builder.Services.ConfigureApplicationCookie(options =>
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IAccount, AccountController>();
-//builder.Services.AddAuthentication(options =>
-//{
-//	options.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-//	options.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-//	options.DefaultChallengeScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-//}).AddCookie();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
