@@ -7,8 +7,8 @@ using UserManagement.ViewModels;
 
 namespace UserManagement.Controllers
 {
-	public class AccountController : Controller
-	{
+	public class AccountController : Controller, IAccount
+    {
 		private readonly IAuthService _authService;
 		private readonly IUserService _userService;
 

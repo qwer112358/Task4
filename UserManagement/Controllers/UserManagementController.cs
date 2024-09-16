@@ -1,8 +1,10 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Security.Claims;
 using UserManagement.Models.Entities;
 
 namespace UserManagement.Controllers
@@ -11,10 +13,15 @@ namespace UserManagement.Controllers
     public class UserManagementController : Controller
     {
         private readonly UserManager<ApplicationUser> _userManager;
+        private readonly IAccount _accountManager;
+        private readonly IAuthenticationService _authenticationService;
 
-        public UserManagementController(UserManager<ApplicationUser> userManager)
+        public UserManagementController(UserManager<ApplicationUser> userManager, IAccount accountManager, 
+            IAuthenticationService authenticationService)
         {
             _userManager = userManager;
+            _accountManager = accountManager;
+            _authenticationService = authenticationService;
         }
 
         public async Task<IActionResult> Index() => View(await _userManager.Users.ToListAsync());
@@ -28,8 +35,10 @@ namespace UserManagement.Controllers
                 if (user is not null)
                 {
 					user.IsBlocked = true;
-					await _userManager.UpdateAsync(user);
-				}
+                    await _userManager.UpdateAsync(user);
+                    if (IsCurrentUser(user))
+                        await _accountManager.Logout();
+                }
             }
             return RedirectToHome();
         }
@@ -66,7 +75,6 @@ namespace UserManagement.Controllers
 
         private IActionResult RedirectToHome() => RedirectToAction("Index");
 
+        private bool IsCurrentUser(ApplicationUser user) => User.FindFirstValue(ClaimTypes.NameIdentifier) == user.Id;
 	}
-
-
 }
