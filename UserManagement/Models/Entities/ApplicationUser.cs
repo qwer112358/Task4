@@ -6,7 +6,7 @@ namespace UserManagement.Models.Entities
     {
         public string? Name { get; set; }
         public DateTime RegistrationDate { get; set; } = DateTime.UtcNow;
-		public DateTime LastLoginDate { get; set; }
+	public DateTime LastLoginDate { get; set; }
         public bool IsBlocked { get; set; }
     }
 }
