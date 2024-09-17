@@ -30,7 +30,7 @@ namespace UserManagement.Controllers
                 var user = await _userManager.FindByIdAsync(id);
                 if (user is not null)
                 {
-					user.IsBlocked = true;
+		    user.IsBlocked = true;
                     await _userManager.UpdateAsync(user);
                     if (IsCurrentUser(user))
                         await _accountManager.Logout();
@@ -47,9 +47,9 @@ namespace UserManagement.Controllers
                 var user = await _userManager.FindByIdAsync(id);
                 if (user is not null)
                 {
-					user.IsBlocked = false;
-					await _userManager.UpdateAsync(user);
-				}
+		    user.IsBlocked = false;
+		    await _userManager.UpdateAsync(user);
+		}
             }
             return RedirectToHome();
         }
@@ -61,7 +61,7 @@ namespace UserManagement.Controllers
             {
                 var user = await _userManager.FindByIdAsync(id);
                 if (user is not null)
-					await _userManager.DeleteAsync(user);
+		    await _userManager.DeleteAsync(user);
             }
             return RedirectToHome();
         }
