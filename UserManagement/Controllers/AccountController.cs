@@ -47,7 +47,6 @@ namespace UserManagement.Controllers
 			var errorMessage = ValidateUser(user);
 			if (!string.IsNullOrEmpty(errorMessage))
 				return ShowErrorsAndView(model, errorMessage);
-
 			await _authService.UpdateLastLoginDateAsync(user!);
 			return await HandleSignIn(model);
 		}
